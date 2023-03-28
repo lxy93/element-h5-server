@@ -15,7 +15,7 @@ const middlewares = jsonServer.defaults({
     static:path.join(__dirname,'../public')
 })
 server.use(middlewares)
-server.use(jsonServer.bodyParser) //请求的中间键
+server.use(jsonServer.bodyParser) //请求体中间键
 router(server) 
 
 const jsonRouter = jsonServer.router(db)
