@@ -16,9 +16,32 @@ const middlewares = jsonServer.defaults({
 })
 server.use(middlewares)
 server.use(jsonServer.bodyParser) //请求体中间键
+
+server.use((req, res, next)=> {
+    const json = res.json.bind(res)
+    res.success = (data)=> {
+        return json({
+            code:200,
+            msg:'请求成功',
+            data
+        })
+    }
+    res.fail = (code = -1, msg, data)=> {
+        return json({
+            code,
+            msg,
+            data
+        })
+    }
+    next()
+})
+
 router(server) 
 
 const jsonRouter = jsonServer.router(db)
+server.use((req, res, next)=> {
+    setTimeout(next,1000)
+})
 server.use('/api',jsonRouter)
 
 server.listen(8000,()=>{
